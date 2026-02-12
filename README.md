@@ -6,10 +6,10 @@ Personal agent skills for development workflow.
 
 ```bash
 # Install all skills
-npx skills add zainzafar/skills
+npx skills add zainzafar90/skills
 
 # Install a specific skill
-npx skills add zainzafar/skills --skill react-craft
+npx skills add zainzafar90/skills --skill react-craft
 ```
 
 ## Skills
