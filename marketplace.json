@@ -1,14 +1,14 @@
 {
   "metadata": {
     "name": "skills",
-    "description": "Personal development skills — React conventions, structure, testing, and workflow.",
+    "description": "Personal development skills \u2014 React conventions, structure, testing, and workflow.",
     "author": "zainzafar90"
   },
   "skills": [
     {
       "name": "react-craft",
       "path": "skills/react-craft/SKILL.md",
-      "description": "Enforces React naming conventions, component structure, readability, and test-first development."
+      "description": "Enforces React naming, component and route structure, state ownership, readability, and test-first development."
     }
   ]
 }

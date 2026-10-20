@@ -16,7 +16,7 @@ npx skills add zainzafar90/skills --skill react-craft
 
 | Skill | What it does |
 |---|---|
-| **react-craft** | Naming conventions, component structure, test-first development, route-colocated architecture, file size discipline |
+| **react-craft** | Naming, component and route structure, state ownership, test-first development, 200-line files |
 
 ## Companion skills
 

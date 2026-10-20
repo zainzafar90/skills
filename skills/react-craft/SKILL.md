@@ -1,354 +1,172 @@
 ---
 name: react-craft
-description: Enforces React naming conventions, component structure, readability, and test-first development. Use when creating, reviewing, or refactoring React components. For state management and composition patterns, install the companion skills listed below.
+description: Enforces React naming, component and route structure, state ownership, readability, and test-first development. Use when creating, reviewing, or refactoring React components, hooks, pages, or routes, or when a React file is too long, badly named, or mixes concerns.
+metadata:
+  version: "2.0.0"
 ---
 
-# React Craft
+# React craft
 
-Naming, structure, testing, and readability for React components.
+Naming, structure, state ownership, tests, and readability for React code.
 
-> **This skill covers naming, structure, testing, and readability.**
-> State management, hooks discipline, composition patterns, and UI components are handled by companion skills.
-> Install them alongside this one — the agent will pick them up automatically based on task context.
->
-> ```bash
-> # State & hooks (57 rules — derived state, useEffect misuse, waterfalls, bundle size)
-> npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices
->
-> # Composition (compound components, avoid boolean prop sprawl, state lifting)
-> npx skills add vercel-labs/agent-skills --skill vercel-composition-patterns
->
-> # State management decision framework (Zustand vs RTK vs React Query vs Jotai)
-> npx skills add wshobson/agents --skill react-state-management
->
-> # TDD workflow
-> npx skills add obra/superpowers --skill test-driven-development
->
-> # shadcn/ui (Radix + Tailwind component patterns, forms w/ RHF + Zod)
-> npx skills add giuseppe-trisciuoglio/developer-kit --skill shadcn-ui
->
-> # Tailwind v4 + shadcn setup
-> npx skills add jezweb/claude-skills --skill tailwind-v4-shadcn
-> ```
+Works on its own. When `coding-core` is installed it owns the shared numbers and naming; the values below
+match it. When they differ, `coding-core` wins.
 
----
+Companion skills, installed separately:
 
-## 1. Test First
-
-Identify test cases BEFORE writing implementation. Co-locate tests next to components.
-
-```
-Button/
-├── Button.tsx
-├── Button.test.tsx
-└── index.ts
+```bash
+npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices   # hooks, effects, bundle size
+npx skills add vercel-labs/agent-skills --skill vercel-composition-patterns   # compound components
+npx skills add obra/superpowers --skill test-driven-development               # TDD loop
 ```
 
-### What to test (priority order)
-1. User behavior — clicks, typing, selection
-2. Conditional rendering — right elements for right state
-3. Edge cases — empty, error, loading, null, overflow
-4. Accessibility — keyboard nav, roles, labels
-5. Integration — works with parent/child context
+## 1. Test first
 
-### Rules
+List the test cases before writing the component. Tests sit next to the code they test.
 
-- Test behavior, not implementation. Query by `role`, `label`, `text` — never by classname or test ID unless unavoidable.
-- One behavior per `it()` block.
-- Descriptive names: `it('disables submit when form has validation errors')` not `it('works')`.
+- Query by role, label, or text. A class name or test ID only when nothing else works.
+- One behavior per `it()`, named as the behavior: `disables submit when the form has errors`.
+- Priority: user behavior, conditional rendering, edge cases (empty, error, loading, overflow), accessibility.
 - No snapshot tests unless the markup is static and rarely changes.
+- Bug fix: first a test that fails on the unpatched code.
 
 ```tsx
-// ✅
-it('calls onSearch with trimmed query on submit', async () => {
+it("calls onSearch with the trimmed query on submit", async () => {
   const onSearch = vi.fn();
-  render(<SearchInput onSearch={onSearch} />);
-  await userEvent.type(screen.getByRole('searchbox'), '  react hooks  ');
-  await userEvent.keyboard('{Enter}');
-  expect(onSearch).toHaveBeenCalledWith('react hooks');
-});
 
-// ❌
-it('works', () => {
-  const { container } = render(<SearchInput onSearch={vi.fn()} />);
-  expect(container.querySelector('.search-input')).toBeTruthy();
+  render(<SearchInput onSearch={onSearch} />);
+
+  await userEvent.type(screen.getByRole("searchbox"), "  react hooks  ");
+  await userEvent.keyboard("{Enter}");
+
+  expect(onSearch).toHaveBeenCalledWith("react hooks");
 });
 ```
-
----
 
 ## 2. Naming
 
-Every name should answer: "What is this and what does it do?"
+| Thing | Rule | Good | Bad |
+|---|---|---|---|
+| Component | PascalCase noun, no abbreviations | `InvoiceTable` | `Table1`, `AvatarDD` |
+| Boolean prop or variable | `is`, `has`, `should`, `can` | `isOnSale` | `sale` |
+| Event prop / internal handler | `on…` / `handle…` | `onAddToCart`, `handleRowClick` | `click` |
+| Hook | `use` + capability | `usePaginatedProducts` | `useData` |
+| Transform | verb + noun | `formatPrice`, `toSlug` | `process` |
+| Collection | plural | `cartItems` | `itemList` |
 
-### Components — PascalCase, noun-based
+Files and folders are kebab-case, always:
 
-| ✅ | ❌ | Why |
-|---|---|---|
-| `InvoiceTable` | `Table1` | Describes what it renders |
-| `UserAvatarDropdown` | `AvatarDD` | No abbreviations |
-| `PaymentMethodForm` | `Form` | Too generic |
-
-### Props — camelCase, intention-revealing
-
-- Booleans: `is`, `has`, `should`, `can` prefix
-- Events: `on` prefix (component API) / `handle` prefix (internal)
-- Render slots: `render` prefix or `Content` suffix
-
-```tsx
-// ✅
-interface ProductCardProps {
-  product: Product;
-  isOnSale: boolean;
-  hasReviews: boolean;
-  onAddToCart: (id: string) => void;
-  renderBadge?: (product: Product) => ReactNode;
-}
-
-// ❌
-interface ProductCardProps {
-  data: any;
-  sale: boolean;
-  click: () => void;
-}
-```
-
-### Hooks — always `use` + capability description
-
-| ✅ | ❌ |
+| File | Example |
 |---|---|
-| `useDebounce(value, delay)` | `useDb(v, d)` |
-| `usePaginatedProducts(filters)` | `useData(filters)` |
+| Component | `order-list-table.tsx` |
+| Hook | `use-order-filters.ts` |
+| Feature rules | `order-rules.ts` |
+| API calls | `orders.api.ts` |
+| Query keys and options | `orders.queries.ts` |
+| Test | `order-list-table.test.tsx` |
 
-### Handlers & variables
+## 3. Component anatomy
 
-- Handlers: `handle` + noun + verb → `handleFormSubmit`, `handleRowClick`
-- Booleans: `isLoading`, `hasError`, `shouldRefetch`
-- Transforms: `formatPrice`, `parseQueryParams`, `toSlug`
-- Collections: plural → `users`, `cartItems`, `selectedIds`
-
-### Files — kebab-case everywhere
-
-All files use **kebab-case**. No exceptions. Consistency aids grep and discovery across the codebase.
-
-| Type | Convention | Example |
-|---|---|---|
-| Components | `kebab-case.tsx` | `order-list-table.tsx` |
-| Hooks | `use-*.ts` | `use-order-table-query.ts` |
-| Utils | `kebab-case.ts` | `format-currency.ts` |
-| Constants | `kebab-case.ts` | `route-paths.ts` |
-| Types | `kebab-case.ts` | `order-types.ts` |
-| API layer | `*.requests.ts` | `orders.requests.ts` |
-| API hooks | `*.hooks.ts` | `orders.hooks.ts` |
-
----
-
-## 3. Component Structure
-
-### Anatomy (consistent order inside every component)
+Same order in every component: types, component-scoped constants, then inside the component hooks,
+derived values, handlers, guard returns, render.
 
 ```tsx
-// 1. Types (if co-located)
-interface WidgetProps { ... }
+interface InquiriesPageProps {
+  workspaceId: string;
+}
 
-// 2. Constants scoped to component
-const TREND_ICONS = { up: TrendUp, down: TrendDown } as const;
+export function InquiriesPage({ workspaceId }: InquiriesPageProps) {
+  const query = useInquiries(workspaceId);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
-// 3. Component
-export function Widget({ title, metric, trend }: WidgetProps) {
-  // 3a. Hooks (top, consistent order)
-  const [isExpanded, setIsExpanded] = useState(false);
-  const formatted = useMemo(() => formatNumber(metric), [metric]);
+  if (query.isPending) {
+    return <InquiriesSkeleton />;
+  }
 
-  // 3b. Derived values
-  const TrendIcon = TREND_ICONS[trend];
+  if (query.isError) {
+    return <InquiriesError error={query.error} />;
+  }
 
-  // 3c. Handlers
-  const handleToggle = () => setIsExpanded(prev => !prev);
+  if (query.data.length === 0) {
+    return <InquiriesEmptyState />;
+  }
 
-  // 3d. Early returns (guards)
-  if (!metric) return <EmptyState title={title} />;
-
-  // 3e. Render
-  return ( ... );
+  return <InquiriesTable inquiries={query.data} selectedId={selectedId} onSelect={setSelectedId} />;
 }
 ```
 
-### Readability rules
+- Every hook runs before the first guard return. A guard clause must never make a hook conditional.
+- Guards are multiline blocks, never `if (x) return y;` on one line. No nested ternaries.
+- Name important decisions before the JSX instead of evaluating them inline.
+- Destructure props in the signature. More than 5–7 props: consider composition.
+- One component per file; a tiny private helper may stay.
+- 200 lines per file, hard limit. Split into hooks or sub-components before that.
+- Comments only for a constraint, as `/* */`, 8 words or fewer.
 
-- **~150 lines max** per component. Extract sub-components or hooks if longer.
-- **5-7 props max** before considering composition/compound patterns.
-- **Destructure props** in the signature, not the body.
-- **One component per file** (small co-located helpers are OK).
-- **Early returns** for loading/error/empty — no nested ternary soup.
+## 4. Structure
 
-```tsx
-// ❌ Ternary hell
-{isLoading ? <Spinner /> : error ? <Error /> : data?.length ? data.map(...) : <Empty />}
+Group by feature or route, never by type. No root `utils/`, `helpers/`, `hooks/`, or `types/` folders.
 
-// ✅ Guard clauses
-if (isLoading) return <Spinner />;
-if (error) return <ErrorMessage message={error} />;
-if (!data?.length) return <EmptyState />;
-
-return <div>{data.map(...)}</div>;
-```
-
----
-
-## 4. Project Structure
-
-Scale to project size. Don't over-architect small projects.
-
-**Small:**
 ```
 src/
-├── components/
-├── hooks/
-├── utils/
-├── types.ts
-└── App.tsx
+├── components/ui/              generic primitives only (button, dialog)
+├── features/orders/
+│   ├── order-list-page.tsx     orchestrates, holds no logic
+│   ├── order-list-table.tsx
+│   ├── use-order-filters.ts
+│   ├── order-rules.ts
+│   ├── orders.api.ts
+│   └── orders.queries.ts
+└── app/router.tsx              lazy routes only
 ```
 
-**Medium/Large — Route-colocated architecture:**
-```
-src/
-├── components/              # Shared/reusable UI only
-│   ├── data-table/          # One concern per file — never mix unrelated components
-│   ├── project-filter/
-│   └── ...
-├── routes/
-│   └── orders/
-│       └── order-list/
-│           ├── order-list.tsx          # Page — orchestration only (~60-80 LOC)
-│           ├── hooks/
-│           │   └── use-order-table-query.ts
-│           ├── components/
-│           │   └── order-list-table.tsx
-│           └── index.ts
-├── hooks/                   # Shared hooks only
-├── lib/
-│   └── client/
-│       └── orders.requests.ts   # Resource-scoped API layer
-├── providers/
-│   └── router/
-│       └── route-map.tsx        # Lazy route modules
-├── utils/
-├── types/
-└── constants/
-```
+A small app can start with one `features/` folder per screen. Promote code to shared only when a second
+feature needs it, and give the shared module a specific name (`format-currency.ts`).
 
-### Route page files are orchestrators, not containers
+- Page files orchestrate hooks and components. No table columns, query logic, or form schemas inside.
+- Routes lazy-load: `{ path: "/orders", lazy: () => import("@/features/orders/order-list-page") }`.
+- A protected route checks the session; it is not object-level authorization. The server enforces that.
+- No `.service.ts` files on the client by analogy with the backend.
+- Feature barrels expose only that feature's public API. No broad root barrels; import from the source file.
+- No circular imports between features.
 
-A page file wires together hooks and components. It should not contain table configs, query logic, or form schemas.
+## 5. State ownership
 
-```tsx
-// ✅ ~60 LOC — orchestration only
-export function OrderList() {
-  const { data, isLoading } = useOrderTableQuery();
-  const filters = useOrderFilters();
-
-  if (isLoading) return <PageSkeleton />;
-
-  return (
-    <PageLayout title="Orders">
-      <OrderFilters {...filters} />
-      <OrderListTable data={data} />
-    </PageLayout>
-  );
-}
-
-// ❌ 400+ LOC page with inline table columns, filter logic, query params
-```
-
-### File size discipline
-
-Target **~60 LOC avg** per file. Hard ceiling of **200 LOC** — if you hit it, split.
-
-| LOC | Action |
+| State | Owner |
 |---|---|
-| < 100 | Good |
-| 100–200 | Review — can a hook or sub-component be extracted? |
-| 200+ | Must split. Extract hooks/, components/, or utils/ next to the file. |
+| Server data | the query cache (`orders.queries.ts`), never copied into a store |
+| Filters, sorting, pagination worth sharing | the URL |
+| Form values and errors | the form library or the form component |
+| Dialog open, selection, expansion | local `useState` |
+| Values computable from other state | derived during render, never synced by an effect |
+| State shared across routes | one deliberately scoped global store |
 
-### Lazy route loading
+- Props drilled more than 2 levels signal a missing boundary: compose, or scope a context to that tree.
+- Theme and appearance values go through CSS variables, not inline `style` values.
 
-Always use lazy imports in the router. Static imports bundle every page upfront.
+## 6. Anti-patterns
 
-```tsx
-// ✅
-{ path: "/orders", lazy: () => import("@/routes/orders/order-list") }
+- **God file:** a 941-line `data-table.tsx` holding an unrelated `ProjectFilter`. One concern per file.
+- **Fat provider:** a 460-line `auth-provider.tsx` that fetches, stores, and renders. Split into
+  `use-auth.ts`, `auth-context.tsx`, `auth-guard.tsx`.
+- **Flat route dumping:** every page in `routes/pages/` sharing one `routes/components/`. Colocate instead.
+- **Static router imports:** every page imported at the top of the router. Lazy-load each route.
 
-// ❌
-import { OrderList } from "@/routes/orders/order-list";
-{ path: "/orders", element: <OrderList /> }
-```
+## 7. Accessibility
 
-### Barrel export scoping
+- `<button>` for actions, `<a>` for navigation, never `<div onClick>`.
+- Every interactive element is focusable with a visible focus ring; Escape closes overlays.
+- `aria-label` on icon buttons, `aria-live` for async updates, `aria-expanded` on toggles.
+- Targets at least 24×24px everywhere, 44×44px on touch layouts.
 
-- Feature barrels (`index.ts`) expose only the public API of that feature.
-- **Never** create broad root barrels (e.g., `lib/index.ts` re-exporting everything) — they hurt tree-shaking and make implicit dependencies invisible.
-- If only one feature uses a util, it lives in that feature folder, not in shared `lib/`.
+## 8. Pre-ship checklist
 
-```tsx
-// ✅ Direct import
-import { formatOrderDate } from "@/routes/orders/utils/format-order-date";
-
-// ❌ Broad barrel
-import { formatOrderDate } from "@/lib";
-```
-
-### Principles
-- Colocate related code (tests, hooks, components next to their page)
-- Route-local hooks/ and components/ before promoting to shared
-- No circular deps between route features
-- Max 3 levels of nesting
-- Kebab-case for all file names (consistency aids grep/discovery)
-
----
-
-## 5. Anti-Patterns (Real-World)
-
-These are patterns found in production codebases that hurt readability and reviewability.
-
-**God files with mixed concerns**
-A 941-line `data-table.tsx` that contains both `ProjectFilter` and an unrelated `DataTable`. Split them — one concern per file, always.
-
-**Fat providers**
-A 460-line `auth-provider.tsx` doing data fetching, state management, and UI logic. Break into: `use-auth.ts` (hook) + `auth-context.tsx` (context) + `auth-guard.tsx` (UI boundary).
-
-**Flat route dumping**
-All pages in `routes/pages/` with shared logic in `routes/components/` means every page implicitly depends on the entire shared folder. Use route-colocated hooks/ and components/ instead.
-
-**Broad barrels hiding dependencies**
-A root `lib/index.ts` re-exporting everything makes it impossible to see what a feature actually depends on. Import directly from the source file.
-
-**Static router imports**
-Importing every page at the top of `router.tsx` bundles everything upfront. Use `lazy: () => import(...)` per route.
-
----
-
-## 6. Accessibility Baseline
-
-Every component must have:
-
-- Semantic HTML: `<button>` for actions, `<a>` for nav — never `<div onClick>`
-- Keyboard support: all interactive elements focusable, visible focus ring, Escape closes overlays
-- ARIA when semantic HTML isn't enough: `aria-label` on icon buttons, `aria-live` for dynamic updates, `aria-expanded` for toggles
-- Touch targets: min 44x44px on mobile
-
----
-
-## 7. Pre-Ship Checklist
-
-- [ ] Tests cover behavior, edge cases, a11y
-- [ ] Names are self-documenting (component, props, hooks, handlers)
-- [ ] Single responsibility — no "and" in the description
-- [ ] File under 200 LOC — page files under 100
-- [ ] No `any` types
-- [ ] No `console.log`
-- [ ] No magic strings/numbers — use named constants
-- [ ] Loading, error, empty states handled
-- [ ] Keyboard navigable
-- [ ] Route is lazy-loaded
-- [ ] No broad barrel imports — direct imports only
+- [ ] Tests cover behavior, edge cases, and accessibility; a bug fix has a test that failed first
+- [ ] Names describe what each thing is and does
+- [ ] Every file under 200 lines; pages only orchestrate
+- [ ] Hooks run before guard returns; guards are multiline
+- [ ] No `any`, no `console.log`, no magic strings or numbers
+- [ ] Loading, error, and empty states handled
+- [ ] Keyboard navigable, targets sized
+- [ ] Routes lazy-loaded, imports direct, no root barrels
+- [ ] Server data stays in the query cache
