@@ -1,16 +1,16 @@
 ---
-name: react-craft
+name: react-standards
 description: Enforces React naming, component and route structure, state ownership, readability, and test-first development. Use when creating, reviewing, or refactoring React components, hooks, pages, or routes, or when a React file is too long, badly named, or mixes concerns.
 metadata:
   version: "2.0.0"
 ---
 
-# React craft
+# React standards
 
 Naming, structure, state ownership, tests, and readability for React code.
 
-Works on its own. When `coding-core` is installed it owns the shared numbers and naming; the values below
-match it. When they differ, `coding-core` wins.
+Works on its own. When `coding-standards` is installed it owns the shared numbers and naming; the values below
+match it. When they differ, `coding-standards` wins.
 
 Companion skills, installed separately:
 
