@@ -51,6 +51,10 @@ npx skills add giuseppe-trisciuoglio/developer-kit --skill shadcn-ui
 npx skills add jezweb/claude-skills --skill tailwind-v4-shadcn
 ```
 
+## Credits
+
+`pr-review` is the work of [nomanr](https://github.com/nomanr).
+
 ## Adding new skills
 
 Create a folder under `skills/` with a `SKILL.md`:

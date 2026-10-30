@@ -46,3 +46,7 @@ Save to `ai-help/pr-review/pr-<n>.md`, containing the verdict line, findings, a 
 Then publish it as a private Artifact: verdict on top, findings as cards with the suggestion diff, screenshots and video inline when `--visual` ran.
 
 Chat reply: the verdict (`no blockers` or `blocked by …`), the findings as one line each, and the artifact link. Nothing else.
+
+## Credit
+
+Original work by [nomanr](https://github.com/nomanr).
