@@ -14,7 +14,7 @@ Each step is its own skill. Load it with the Skill tool by name and follow it; d
 |---|---|---|
 | 1. Review | `pr-review` | the user skips it |
 | 2. Prove the UI | `browser-verify` | the change touches no UI |
-| 3. Polish | `ocd`, code pass always, UI pass when the UI changed | the user skips it |
+| 3. Polish | `ocd diff`, code pass always, UI pass when the UI changed | the user skips it |
 | 4. Clean up | `lean` | the user skips it |
 | 5. Commit | `commit` | nothing is uncommitted |
 | 6. Describe | `pr-description` | the user skips it |

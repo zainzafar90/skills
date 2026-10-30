@@ -24,13 +24,24 @@ Two rules hold the whole pass together:
 
 ## Pick the pass
 
+`$ARGUMENTS` = `[code|screens] [diff|full]`. Plain words mean the same thing.
+
 | Asked for | Run |
 |---|---|
-| ocd, or "is it really done" | Both: the code pass, then the UI pass if the project has a UI |
-| Screens, polish, pixels, design | UI pass: steps 1 to 8 below |
-| Code, structure, naming, API, web consistency, security, scale | Code pass: follow [code-pass.md](code-pass.md), then steps 5 to 8 below |
+| `ocd`, or "is it really done" | Both: the code pass, then the UI pass if the project has a UI |
+| `screens`, polish, pixels, design | UI pass: steps 1 to 8 below |
+| `code`, structure, naming, API, web consistency, security, scale | Code pass: follow [code-pass.md](code-pass.md), then steps 5 to 8 below |
 
 Both passes give one ranked list, not two.
+
+| Scope | Code pass | UI pass |
+|---|---|---|
+| `diff` | Only the files the change touches | Only the screens those files render, named in one line |
+| `full` | The whole repo | Every surface |
+| Neither | Every feature the branch touches; the whole repo on the main branch | Every surface |
+
+The change is `git diff $(git merge-base HEAD origin/HEAD)` (or `main`) plus untracked files, so uncommitted work counts. Nothing
+changed: say so and stop. A shared component, token, or layout changed: its screens all count.
 
 ## 1. Scope
 
@@ -38,7 +49,7 @@ Read the project's own notes first: `CLAUDE.md`, `DESIGN.md`,
 `.knowledge/state/DESIGN.md`, `tasks/lessons.md`, any UAT or backlog doc.
 A decision recorded there is settled. Never raise it as a finding.
 
-Then list every surface from the routes, the component tree and the running
+Then list the surfaces in scope from the routes, the component tree and the running
 app: pages, windows, dialogs, popovers, menus, toasts, empty states, error
 states, signed in and signed out, first run. Ask the user only if the project
 gives no way to find them or to run the app.
