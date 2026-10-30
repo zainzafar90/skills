@@ -1,14 +1,44 @@
 {
   "metadata": {
     "name": "skills",
-    "description": "Personal development skills \u2014 React conventions, structure, testing, and workflow.",
+    "description": "Personal agent skills: React standards, UI polish, and the review-to-PR shipping flow.",
     "author": "zainzafar90"
   },
   "skills": [
     {
-      "name": "react-craft",
-      "path": "skills/react-craft/SKILL.md",
+      "name": "react-standards",
+      "path": "skills/react-standards/SKILL.md",
       "description": "Enforces React naming, component and route structure, state ownership, readability, and test-first development."
+    },
+    {
+      "name": "ocd",
+      "path": "skills/ocd/SKILL.md",
+      "description": "A last-mile perfection pass on a user interface that catches the small things that make a product feel unfinished before the user has to point them out."
+    },
+    {
+      "name": "lean",
+      "path": "skills/lean/SKILL.md",
+      "description": "Cuts the current change down to the least code that works, strips comments that narrate the code, and applies the fixes."
+    },
+    {
+      "name": "commit",
+      "path": "skills/commit/SKILL.md",
+      "description": "Makes one-line commits on a human-named branch with no Co-Authored-By or AI attribution, and strips attribution from commits not yet pushed."
+    },
+    {
+      "name": "ship",
+      "path": "skills/ship/SKILL.md",
+      "description": "Takes a finished branch through review, UI checks, cleanup, commits, and a PR description in one run."
+    },
+    {
+      "name": "pr-review",
+      "path": "skills/pr-review/SKILL.md",
+      "description": "Reviews a pull request read-only and reports at most five confirmed findings with ready-to-apply suggestion blocks."
+    },
+    {
+      "name": "pr-description",
+      "path": "skills/pr-description/SKILL.md",
+      "description": "Writes a short, scannable PR title and description from the current branch, with optional before and after screenshots and video."
     }
   ]
 }

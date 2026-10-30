@@ -9,14 +9,23 @@ Personal agent skills for development workflow.
 npx skills add zainzafar90/skills
 
 # Install a specific skill
-npx skills add zainzafar90/skills --skill react-craft
+npx skills add zainzafar90/skills --skill react-standards
 ```
 
 ## Skills
 
 | Skill | What it does |
 |---|---|
-| **react-craft** | Naming, component and route structure, state ownership, test-first development, 200-line files |
+| **react-standards** | Enforces React naming, component and route structure, state ownership, readability, and test-first development. |
+| **ocd** | A last-mile perfection pass on a user interface that catches the small things that make a product feel unfinished before the user has to point them out. |
+| **lean** | Cuts the current change down to the least code that works, strips comments that narrate the code, and applies the fixes. |
+| **commit** | Makes one-line commits on a human-named branch with no Co-Authored-By or AI attribution, and strips attribution from commits not yet pushed. |
+| **ship** | Takes a finished branch through review, UI checks, cleanup, commits, and a PR description in one run. |
+| **pr-review** | Reviews a pull request read-only and reports at most five confirmed findings with ready-to-apply suggestion blocks. |
+| **pr-description** | Writes a short, scannable PR title and description from the current branch, with optional before and after screenshots and video. |
+
+`ship` runs `pr-review` → `browser-verify` + `ocd` (UI only) → `lean` → `commit` → `pr-description`.
+`browser-verify` and the `*-standards` rule skills live in [zainzafar90/myelin](https://github.com/zainzafar90/myelin).
 
 ## Companion skills
 
@@ -52,4 +61,4 @@ skills/
     └── SKILL.md
 ```
 
-Then add it to `.claude-plugin/marketplace.json`.
+Then add it to `marketplace.json`.
