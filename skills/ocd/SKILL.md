@@ -16,11 +16,12 @@ metadata:
 Be the person with an obsessive eye. Find what feels unfinished, on screen and
 in the code, prove it, rank it, and fix it only after the user approves the list.
 
-Two rules hold the whole pass together:
+Three rules hold the whole pass together:
 
 - **No finding without proof.** A screenshot for the UI, `file:line` or command output for code.
 - **No fix before the list is approved**, and no fix called done until it is proven: seen in a real browser for
   the UI, the repo's checks for code.
+- **No installing tools or changing the user's setup without a yes.** Use what the repo and session already have.
 
 ## Pick the pass
 
@@ -54,6 +55,9 @@ app: pages, windows, dialogs, popovers, menus, toasts, empty states, error
 states, signed in and signed out, first run. Ask the user only if the project
 gives no way to find them or to run the app.
 
+Before any sign-in, check which API the app points at. Production: stop, point it at a local or test API, or put the
+signed-in surfaces on the `Not run:` line. Never send test requests to production.
+
 ## 2. Capture
 
 Use whatever browser automation the session has (Playwright, a browser pane,
@@ -63,11 +67,12 @@ Chrome DevTools). For every surface take:
 |---|---|
 | Theme | light and dark: the app's own theme switch if it has one, otherwise emulate the OS setting |
 | Width | desktop (1440x900) and phone (390x844) |
-| State | rest, hover and keyboard focus of each interactive thing, side panels open and closed |
+| State | rest, side panels open and closed |
 
 Save outside the repo (scratchpad or temp dir) as
 `<surface>--<theme>--<width>[--<state>].png` so a finding can point at its file.
-Crop hover and focus shots to the element and its surroundings. If an element
+After step 3, add hover and focus shots for audit leads and one of each control type. Skip the rest; a shot nobody
+looks at proves nothing. Crop them to the element and its surroundings. If an element
 cannot be hovered because something covers it, that is a finding: note it and
 move on instead of letting the capture hang.
 
@@ -112,7 +117,10 @@ destructive action, switch language if the app is translated.
 
 ## 5. Report
 
-One ranked list, worst first. Each finding is exactly this:
+Two sections, each ranked worst first: **Polish**, then **Bugs**. Polish is what looks, reads, or is built unfinished.
+Bugs are wrong behavior found while reading, like races and lost updates.
+
+Each section shows its top 15, then a count of the rest by severity, offered on request. Each finding is exactly this:
 
 ```
 3. [noticeable] "Sign out" sits left, "Cancel" is centred, in all 6 confirm dialogs.
@@ -122,11 +130,16 @@ One ranked list, worst first. Each finding is exactly this:
 ```
 
 - First line: what the user sees, in plain words. Cause comes second.
-- Severity: `blocks polish`, `noticeable` or `nitpick`.
+- Severity goes by the effect on the user, not by how rare it is:
+  - `blocks polish`: breaks for a user, loses what they typed or saved, opens a security hole, or hides a public page from search or sharing.
+  - `noticeable`: a user or teammate would trip on it.
+  - `nitpick`: harmless, but it should not be there.
 - Fix: one line.
-- The same problem in many places is one finding with a count.
+- One problem per finding, with no leftovers or misc bucket. The same problem in many places is one finding with a count.
+- A lead you did not open is dropped, not reported.
+- Anything that blocks a surface, like a failing sign-up or broken seed data, is a finding ranked by what it hides.
 - Within one severity, what hurts users most comes first, then the most visible surface.
-- Anything that could not run goes on one `Not run:` line above the list.
+- Every check group ends as a finding, clean, or on one `Not run:` line above the list with its reason. No silent skips.
 - Show the screenshots, do not describe them: attach or embed them where the session can, give the file paths where it cannot.
 - List what is good only if asked. No intro, no summary, no essay.
 
@@ -171,4 +184,5 @@ or lessons file. Then stop.
 | "While I'm here I'll tidy this too" | One finding, one commit. New things go on the list. |
 | "The pixels are fine, so it's finished" | Do the code pass too. |
 | "It works, so the structure is fine" | Compare it to its sibling features. |
-| "It feels fast enough" | Measure it, or list it under "Not run". |
+| "It feels fast enough" | Measure it, or list it under "Not run" with the reason. |
+| "It's rare, so it's a nitpick" | Rate the effect. Lost text is lost text. |

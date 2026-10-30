@@ -4,6 +4,9 @@ Read the repo like a new teammate with an obsessive eye. Find where it looks unf
 
 The rules live in the standards skills. This pass finds where the repo breaks them; it does not restate them.
 
+This pass hunts disagreement, not bugs. A logic bug you trip over gets one line in the Bugs section. Do not trace
+races, billing, or sync paths looking for more; that is `pr-review` and `security-audit`.
+
 ## 1. Scope
 
 Read the project's notes first: `AGENTS.md`, `CLAUDE.md`, ADRs, `.knowledge/state/`. A decision recorded there is
@@ -115,11 +118,7 @@ Use the ranked list from step 5 of `SKILL.md`, with proof in place of the screen
    Fix: move it to invoices.queries.ts, matching orders.
 ```
 
-- `blocks polish`: breaks for a user, loses data, opens a security hole, or hides a public page from search or sharing.
-- `noticeable`: a teammate would trip on it.
-- `nitpick`: harmless, but it should not be there.
-
-Within one severity, what hurts users most comes first. The same problem in many places is one finding with a count
-and its first three locations. Then steps 6 to 8 of `SKILL.md` apply.
+Severity, ranking, and the rules for leads follow step 5. The same problem in many places lists its count and first
+three locations. Then steps 6 to 8 of `SKILL.md` apply.
 
 Moving files is a finding, never a side effect. A fix is proven by the repo's lint, typecheck, and tests.

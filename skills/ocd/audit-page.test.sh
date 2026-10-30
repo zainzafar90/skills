@@ -21,6 +21,7 @@ cat >"$SITE/good.html" <<EOF
 </head></html>
 EOF
 touch "$SITE/og.png"
+sed "s#good.html#login.html#" "$SITE/good.html" >"$SITE/login.html"
 
 cat >"$SITE/bad.html" <<EOF
 <html><head>
@@ -48,6 +49,9 @@ expect() {
 }
 
 output=$(bash "$AUDIT" "$BASE/good.html")
+expect 'audit-page: 0 leads'
+
+output=$(bash "$AUDIT" "$BASE/login.html")
 expect 'audit-page: 0 leads'
 
 output=$(bash "$AUDIT" "$BASE/bad.html")
