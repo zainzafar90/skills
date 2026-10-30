@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ocd audit.js self-test</title>
+<style>
+  body { font: 14px system-ui; margin: 20px; }
+  button { font: inherit; }
+  .dialog button { width: 140px; border-radius: 8px; }
+  .dialog button:hover { opacity: .8; }
+  #cancel { height: 32px; }
+  #signout { height: 36px; text-align: left; font-weight: 600; }
+  #greeting { cursor: pointer; width: 200px; }
+  #greeting:hover { background: #eee; }
+  #plain { height: 30px; }
+  #nofocus { height: 30px; outline: none; }
+  #nofocus:hover { opacity: .8; }
+  #chip { width: 80px; white-space: nowrap; overflow: hidden; }
+  #wraps { width: 70px; }
+  #wraps:hover { opacity: .8; }
+  #window { position: relative; width: 200px; height: 60px; overflow: hidden; border: 1px solid #ccc; }
+  #popover { position: absolute; top: 40px; left: 150px; width: 120px; height: 60px; background: #ddd; }
+  #tiny { width: 16px; height: 16px; padding: 0; }
+  #tiny:hover { opacity: .8; }
+  #stretched { width: 200px; height: 50px; }
+  #help { position: fixed; right: 20px; bottom: 20px; width: 40px; height: 40px; }
+  #help:hover { opacity: .8; }
+  #island { position: fixed; right: 0; bottom: 10px; width: 160px; height: 60px; background: #333; color: #fff; }
+  #spinner { width: 20px; height: 20px; border: 2px solid #999; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
+  #wide { width: 3000px; height: 10px; background: #eee; }
+  #good button { height: 32px; width: 120px; border-radius: 8px; }
+  #good button:hover { opacity: .8; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #verdict { font-weight: 700; white-space: pre; }
+</style>
+</head>
+<body>
+<div id="verdict">running</div>
+
+<div class="dialog"><button id="cancel">Cancel</button><button id="signout">Sign out</button></div>
+<p id="greeting">Good morning</p>
+<div><button id="plain">No hover</button></div>
+<div><button id="nofocus">No focus</button></div>
+<div id="chip">A very long label that cannot fit in here</div>
+<div><button id="wraps">Connect your account</button></div>
+<div id="window"><div id="popover">Popover body</div></div>
+<div><button id="tiny" aria-label="close">x</button></div>
+<img id="stretched" alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='teal'/%3E%3C/svg%3E">
+<button id="help">?</button>
+<div id="island">Island</div>
+<div id="spinner"></div>
+<div id="wide"></div>
+<div id="good"><button id="ok1">Save</button><button id="ok2">Close</button></div>
+
+<script>
+  const EXPECT = {
+    offCentreLabel: '#signout', siblingMismatch: '#cancel', fakeAffordance: '#greeting',
+    noHoverStyle: '#plain', noFocusStyle: '#nofocus', textOverflow: '#chip', wrappedLabel: '#wraps',
+    clippedByAncestor: '#popover', smallTarget: '#tiny', offRatio: '#stretched', overlap: '#help',
+    endlessAnimation: '#spinner', outsideViewport: 'page',
+  };
+  const CLEAN = ['#ok1', '#ok2'];
+  addEventListener('load', () => {
+    const script = document.createElement('script');
+    script.src = 'audit.js';
+    script.onload = () => {
+      const found = window.__ocdAudit.findings;
+      const hit = (check, id) => (found[check] || []).some((f) => f.el.includes(id));
+      const missed = Object.entries(EXPECT).filter(([check, id]) => !hit(check, id)).map(([check, id]) => `missed ${check} on ${id}`);
+      const noisy = CLEAN.flatMap((id) => Object.keys(found).filter((check) => hit(check, id)).map((check) => `false ${check} on ${id}`));
+      const problems = [...missed, ...noisy];
+      window.__ocdSelfTest = problems;
+      document.getElementById('verdict').textContent = problems.length ? `FAIL\n${problems.join('\n')}` : 'PASS';
+    };
+    document.head.append(script);
+  });
+</script>
+</body>
+</html>
