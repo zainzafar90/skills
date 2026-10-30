@@ -3,10 +3,10 @@ name: ocd
 description: >-
   A last-mile perfection pass on a whole product, screens and code, that catches
   the small things that make it feel unfinished before the user has to point
-  them out. Covers UI polish, folder structure, naming, API and web consistency,
-  and leftovers. Use when the user asks for an ocd, polish, or pixel-perfect
-  pass, a structure or consistency check, or whether a finished feature is
-  really done.
+  them out. Covers UI polish, folder structure, naming, spacing, API and web
+  consistency, security, speed and scale, share previews, and leftovers. Use
+  when the user asks for an ocd, polish, or pixel-perfect pass, a structure or
+  consistency check, or whether a finished feature is really done.
 metadata:
   version: "1.1.0"
 ---
@@ -28,7 +28,7 @@ Two rules hold the whole pass together:
 |---|---|
 | ocd, or "is it really done" | Both: the code pass, then the UI pass if the project has a UI |
 | Screens, polish, pixels, design | UI pass: steps 1 to 8 below |
-| Code, structure, naming, API, web consistency | Code pass: follow [code-pass.md](code-pass.md), then steps 5 to 8 below |
+| Code, structure, naming, API, web consistency, security, scale | Code pass: follow [code-pass.md](code-pass.md), then steps 5 to 8 below |
 
 Both passes give one ranked list, not two.
 
@@ -84,12 +84,17 @@ or flows. Those need step 4.
 `audit-fixture.html` is its self-test: open it in a browser, it prints PASS or
 FAIL. Run it after editing `audit.js`.
 
+For public pages, also run `bash <this skill folder>/audit-page.sh <url>...`. It
+fetches each page logged out and reports `blocked`, `slowTtfb`, `noindex`,
+`missingTag`, and `ogImage`. Its output is a lead too. `audit-page.test.sh` is
+its self-test.
+
 ## 4. Look
 
 Open every screenshot and go through [checklist.md](checklist.md), group by
 group: alignment and rhythm; affordance honesty; density and wasted space; text
 fit; motion; colour, shadow and theme; consistency of controls; naming and
-icons; flows and states; brand presence.
+icons; flows and states; brand presence; copy; public pages; speed.
 
 Also use the app: do every toggle twice, run each flow to its end, trigger each
 destructive action, switch language if the app is translated.
@@ -109,7 +114,8 @@ One ranked list, worst first. Each finding is exactly this:
 - Severity: `blocks polish`, `noticeable` or `nitpick`.
 - Fix: one line.
 - The same problem in many places is one finding with a count.
-- Within one severity, the most visible surface comes first.
+- Within one severity, what hurts users most comes first, then the most visible surface.
+- Anything that could not run goes on one `Not run:` line above the list.
 - Show the screenshots, do not describe them: attach or embed them where the session can, give the file paths where it cannot.
 - List what is good only if asked. No intro, no summary, no essay.
 
@@ -154,3 +160,4 @@ or lessons file. Then stop.
 | "While I'm here I'll tidy this too" | One finding, one commit. New things go on the list. |
 | "The pixels are fine, so it's finished" | Do the code pass too. |
 | "It works, so the structure is fine" | Compare it to its sibling features. |
+| "It feels fast enough" | Measure it, or list it under "Not run". |

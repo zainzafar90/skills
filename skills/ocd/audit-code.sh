@@ -4,24 +4,30 @@ set -u
 
 MAX_SHOWN=25
 MAX_LINES=200
+MAX_CRAMPED=25
 SKIP_RE='(^|/)(dist|build|vendor|generated|__generated__|migrations)/|\.d\.ts$|\.min\.js$'
 CODE_RE='\.(ts|tsx|js|jsx|mjs|cjs|vue|svelte|py|go|rb|rs|java|kt|swift|php|cs)$'
 JS_RE='\.(ts|tsx|js|jsx|mjs|cjs|vue|svelte)$'
 TS_RE='\.(ts|tsx)$'
+COPY_RE='\.(tsx|jsx|vue|svelte|html|mdx)$'
 
 if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   echo "ocd: not a git repository" >&2
   exit 1
 fi
 
+kept_files() {
+  git ls-files -co --exclude-standard | grep -Ev "$SKIP_RE"
+}
+
 code_files() {
-  git ls-files -co --exclude-standard | grep -Ev "$SKIP_RE" | grep -E "$CODE_RE"
+  kept_files | grep -E "$CODE_RE"
 }
 
 search() {
-  local pattern="$1" only="${2:-$CODE_RE}"
+  local pattern="$1" only="${2:-$CODE_RE}" flag="${3:--s}"
 
-  code_files | grep -E "$only" | tr '\n' '\0' | xargs -0 grep -nE "$pattern" 2>/dev/null
+  code_files | grep -E "$only" | tr '\n' '\0' | xargs -0 grep -nE "$flag" -e "$pattern" 2>/dev/null
 }
 
 report() {
@@ -50,11 +56,32 @@ long_files() {
   done
 }
 
+cramped_files() {
+  code_files | while IFS= read -r file; do
+    if [ -f "$file" ]; then
+      awk -v max="$MAX_CRAMPED" -v file="$file" '
+        /^[[:space:]]*$/ { run = 0; next }
+        { if (++run == max) { print file ":" FNR - max + 1 ": " max "+ lines with no blank line"; exit } }
+      ' "$file"
+    fi
+  done
+}
+
+search_copy() {
+  kept_files | grep -E "$COPY_RE" | tr '\n' '\0' | xargs -0 grep -nE "$1" 2>/dev/null
+}
+
 run_audit() {
   code_files | grep -Ei '(^|/)(utils?|helpers?|common|misc|managers?)(/|\.[a-z]+$)' | report catchAll
   code_files | grep -E '(^|/)(service|controller|repository|model|types|constants|hooks|api)\.[a-z]+$' | report noDomainInName
   code_files | grep -E "$JS_RE" | grep -E '[^/]*([A-Z]|[a-z0-9]_[a-z0-9])[^/]*$' | report notKebabCase
   long_files | report overLimit
+  cramped_files | report crampedCode
+  search_copy '[[:alnum:]]—[[:alnum:]]' | report unspacedDash
+  search_copy '\{[a-zA-Z.]*(err|error)\.message\}' | report rawError
+  search 'dangerouslySetInnerHTML|\.innerHTML\s*=' | report rawHtml
+  search '\b(select\b.*\bfrom|insert into|update\b.*\bset|delete from)\b.*\$\{' "$CODE_RE" -i | report sqlInString
+  search "(api[_-]?key|secret|token|password)['\"]?\s*[:=]\s*['\"][^'\"]{8,}" "$CODE_RE" -i | report secretInCode
   search '\b(console\.(log|debug)|debugger)\b' | report debugCode
   search '\b(it|test|describe)\.(only|skip)\b|\bx(it|describe)\(' | report skippedTests
   search ':\s*any\b|\bas any\b|<any>|@ts-(ignore|nocheck)' "$TS_RE" | report looseTypes

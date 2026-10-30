@@ -12,17 +12,21 @@ settled. Never raise it as a finding.
 - On a branch: every feature the branch touches, whole folders, not just changed lines.
 - On the main branch, or when asked for everything: the whole repo.
 
-Map it: apps and packages, web and API, the features on each side. Then load what matches the stack, by name:
-`coding-standards` always, plus `api-standards`, `frontend-standards`, `react-standards`, `typescript-standards`.
-Any are missing: say which in one line and use this file for those.
+Map it: apps and packages, web and API, the features on each side. Then load the skills that match the stack, by name:
+`coding-standards` always, plus `api-standards`, `frontend-standards`, `react-standards`, `typescript-standards`,
+and `security-audit` for its rules, not its full audit. Any are missing: say which in one line and use this file for
+those.
 
 ## 2. Measure
 
 Run these from the repo root:
 
 1. `bash <this skill folder>/audit-code.sh`
-2. The repo's own lint, typecheck, and tests. Anything red is a finding, and so is a repo with no such check.
+2. The repo's own lint, typecheck, and tests. Anything red is a finding, and so is a repo with no such check, or a
+   script with nothing behind it.
    A check that cannot run goes on one "Not run" line above the list.
+3. With the app running: `bash <this skill folder>/audit-page.sh <url>...` on the main API endpoints, for TTFB.
+   No running app: put it on the "Not run" line. Never guess a speed.
 
 **The audit output is a lead, not a verdict.** Open each one and drop what is fine. It cannot judge naming, structure,
 or whether two features agree. Those need step 3.
@@ -40,6 +44,7 @@ Pick the best-kept feature as the yardstick and compare every other feature to i
 - **No catch-all folders or files**, and no file past 200 lines.
 - **File names carry the domain and one casing.** `orders.api.ts`, not `api.ts`.
 - **No empty layers.** No folder, service, or wrapper that only passes a call through.
+- **Code has room to breathe.** Long runs with no blank lines are one finding, fixed with `code-spacing`.
 
 ### Naming
 
@@ -55,6 +60,21 @@ Pick the best-kept feature as the yardstick and compare every other feature to i
 - **One error shape, one pagination shape, one validation approach**, on every endpoint.
 - **Every route says who may call it.** Note any route that skips the check its siblings make.
 
+### Security
+
+- **Input is validated where it enters**, on every route. No SQL or HTML built from raw strings.
+- **No secrets in code, client bundles, or logs.**
+- **Login and public endpoints have rate limits.** CORS names real origins, not `*`.
+
+### Speed and scale
+
+- **No query in a loop.** One screen or request does not run N+1 queries.
+- **Every list has a limit.** No endpoint returns a whole table.
+- **Filters and sorts have an index** on any table that grows.
+- **Every outside call has a timeout**, and retries only failures that can pass on a retry.
+- **Responses carry what the caller uses.** No giant payload on every call.
+- **No wasteful calls.** The same data is not fetched twice for one screen.
+
 ### Web
 
 - **One way to do each job.** One data-fetching pattern, one form pattern, one way to show errors and toasts.
@@ -66,8 +86,13 @@ Pick the best-kept feature as the yardstick and compare every other feature to i
 
 - **Client types match the server.** Trace each call to the real response, not a hand-written guess.
 - **Every endpoint has a caller** and every call has an endpoint.
-- **The UI handles the errors the API really returns.**
+- **The UI handles the errors the API really returns**, in words a user understands, never the raw message.
 - **Env names agree** between code, the example env file, and the deploy config.
+
+### Hardcoded values
+
+- **Prices, plans, limits, and capabilities live in one central place.**
+- **No fake demo data on a real screen.** Numbers on a page come from a real source.
 
 ### Leftovers
 
@@ -75,6 +100,8 @@ Pick the best-kept feature as the yardstick and compare every other feature to i
 - **No dead files, exports, or dependencies.**
 - **No TODO without an owner or issue.**
 - **No skipped or focused tests.** Tests sit beside the code and are named as behavior.
+- **No test weakened to pass.** On a branch, read each changed test: a removed assertion or loosened match that hides
+  a real failure is `blocks polish`.
 - **One package manager, and the README's commands work.**
 
 ## 4. Report
@@ -88,7 +115,7 @@ Use the ranked list from step 5 of `SKILL.md`, with proof in place of the screen
    Fix: move it to invoices.queries.ts, matching orders.
 ```
 
-- `blocks polish`: breaks for a user, loses data, or opens a security hole.
+- `blocks polish`: breaks for a user, loses data, opens a security hole, or hides a public page from search or sharing.
 - `noticeable`: a teammate would trip on it.
 - `nitpick`: harmless, but it should not be there.
 

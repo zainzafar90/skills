@@ -37,6 +37,7 @@ items without one can only be caught by looking.
 - **No movement on hover.** No fan-out, lift, scale or slide when the mouse passes by; it feels jittery. A faint colour or opacity change instead.
 - **No bounce.** Short, plain easing.
 - **A spinner means loading and nothing else.** A waiting, pending or expired state gets a still mark (dashed circle, hourglass). `audit: endlessAnimation`
+- **No jump while loading.** Fonts swap without a jerk, nothing flickers, and content does not push the page down.
 
 ## 6. Colour, shadow and theme
 
@@ -65,12 +66,37 @@ items without one can only be caught by looking.
 - **A flow waits for what it started.** Onboarding does not advance while the sign-in it opened is still open.
 - **Every panel offers the obvious next step.** A signed-out card has a Sign in button. "Sign in again" is a real action, not a dead button next to a message.
 - **Every state is visited.** Empty, loading, error, signed out, first run, full list, long names.
+- **Errors speak human.** No raw API message, status code, or stack trace on screen.
+- **Offline is calm.** An offline app shows what it has saved, not a scary error state.
 
 ## 10. Brand presence
 
 - **The product's own logo is where a user first lands.** Onboarding, sign-in, the signed-out profile card, the empty home.
+- **One current mark everywhere.** Favicon, app icons, extension icons, and share image all use the latest logo.
+
+## 11. Copy
+
+- **It sounds like a person.** No filler phrases or stacked buzzwords that read as AI.
+- **Em dashes in moderation, always spaced.** `word — word`, never `word—word`. More than one in a paragraph is too many.
+
+## 12. Public pages
+
+Landing, marketing, docs, and share links. Pages behind a login skip this group. Leads come from `audit-page.sh`.
+
+- **It opens logged out** and is not marked `noindex`. `audit: blocked, noindex`
+- **The share preview is complete.** `og:title`, `og:description`, and `og:image`, with a full public image URL that loads. `audit: missingTag, ogImage`
+- **The share image is designed for this page.** Open it and look: on brand, current, not a bare default.
+- **Canonical and favicon are set.** `audit: missingTag`
+
+## 13. Speed
+
+Measure a production build where you can; a dev server reads slow. No running app: "Not run", never a guess.
+
+- **Load times stay in the good range.** LCP 2.5s or less, CLS 0.1 or less, INP 200ms or less, TTFB 800ms or less. Use Lighthouse or the browser tool's trace. `audit: slowTtfb`
+- **Images are sized and modern.** AVIF or WebP, and lazy below the fold.
+- **No wasteful calls.** The network log shows no repeated request and no oversized response on one load.
 
 ## Proof
 
-- **Every finding has a screenshot.** No claim from reading code alone.
+- **Every finding has a screenshot,** or command output for groups 12 and 13. No claim from reading code alone.
 - **Every fix is looked at in a real browser.** The same screenshot, taken again, compared.

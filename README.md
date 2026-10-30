@@ -17,7 +17,7 @@ npx skills add zainzafar90/skills --skill react-standards
 | Skill | What it does |
 |---|---|
 | **react-standards** | Enforces React naming, component and route structure, state ownership, readability, and test-first development. |
-| **ocd** | A last-mile perfection pass on screens and code: UI polish, folder structure, naming, API and web consistency, and leftovers. |
+| **ocd** | A last-mile perfection pass on screens and code: UI polish, folder structure, naming, spacing, API and web consistency, security, speed and scale, share previews, and leftovers. |
 | **lean** | Cuts the current change down to the least code that works, strips comments that narrate the code, and applies the fixes. |
 | **commit** | Makes one-line commits on a human-named branch with no Co-Authored-By or AI attribution, and strips attribution from commits not yet pushed. |
 | **ship** | Takes a finished branch through review, UI checks, cleanup, commits, and a PR description in one run. |

@@ -13,6 +13,9 @@ printf '// narrate\nconsole.log(1)\nconst a: any = 1\n/* TODO fix */\nprocess.en
 printf 'it.only("x", () => {})\n' >src/features/orders/orders.test.ts
 printf '/* TODO(#1): owned */\nexport const x = 1\n' >src/features/orders/order-rules.ts
 seq 1 201 >src/features/orders/api.ts
+printf 'const key = { apiKey: "abcd1234efgh" }\nconst q = `select * from orders where id = ${id}`\n' >src/features/orders/orders.db.ts
+printf '<div dangerouslySetInnerHTML={html}>{err.message} fast—simple</div>\n' >src/features/orders/orders-hero.tsx
+printf '<p>fast — simple</p>\n' >src/features/orders/order-copy.tsx
 touch .env package-lock.json yarn.lock
 git add -A
 
@@ -33,11 +36,12 @@ reject() {
   fi
 }
 
-for label in catchAll noDomainInName notKebabCase overLimit debugCode skippedTests looseTypes \
-  todoNoOwner lineComments scatteredEnv committedEnv mixedLockfiles; do
+for label in catchAll noDomainInName notKebabCase overLimit crampedCode unspacedDash rawError rawHtml sqlInString \
+  secretInCode debugCode skippedTests looseTypes todoNoOwner lineComments scatteredEnv committedEnv mixedLockfiles; do
   expect "== $label"
 done
 reject 'order-rules.ts'
+reject 'order-copy.tsx'
 
 CLEAN=$(mktemp -d)
 trap 'rm -rf "${REPO:?}" "${CLEAN:?}"' EXIT

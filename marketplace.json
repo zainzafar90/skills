@@ -13,7 +13,7 @@
     {
       "name": "ocd",
       "path": "skills/ocd/SKILL.md",
-      "description": "A last-mile perfection pass on screens and code: UI polish, folder structure, naming, API and web consistency, and leftovers."
+      "description": "A last-mile perfection pass on screens and code: UI polish, folder structure, naming, spacing, API and web consistency, security, speed and scale, share previews, and leftovers."
     },
     {
       "name": "lean",
