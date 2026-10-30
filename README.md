@@ -53,7 +53,7 @@ npx skills add jezweb/claude-skills --skill tailwind-v4-shadcn
 
 ## Credits
 
-`pr-review` is the work of [nomanr](https://github.com/nomanr).
+He's too shy to post his own work, so here's the guy behind the pr-review magic: [nomanr](https://github.com/nomanr).
 
 ## Adding new skills
 
