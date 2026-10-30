@@ -69,7 +69,7 @@ Chrome DevTools). For every surface take:
 | Width | desktop (1440x900) and phone (390x844) |
 | State | rest, side panels open and closed |
 
-Save outside the repo (scratchpad or temp dir) as
+Save outside the repo (scratchpad or temp dir), never in a folder inside it, even an ignored one, as
 `<surface>--<theme>--<width>[--<state>].png` so a finding can point at its file.
 After step 3, add hover and focus shots for audit leads and one of each control type. Skip the rest; a shot nobody
 looks at proves nothing. Crop them to the element and its surroundings. If an element
@@ -130,16 +130,18 @@ Each section shows its top 15, then a count of the rest by severity, offered on 
 ```
 
 - First line: what the user sees, in plain words. Cause comes second.
+- `Proof:` replaces `Shot:` when the evidence is code or command output. Give both when you have both.
 - Severity goes by the effect on the user, not by how rare it is:
-  - `blocks polish`: breaks for a user, loses what they typed or saved, opens a security hole, or hides a public page from search or sharing.
+  - `blocks polish`: breaks for a user, loses what they typed or saved, opens a security hole, or hides a public page from search or sharing. A control that does nothing when used counts as broken.
   - `noticeable`: a user or teammate would trip on it.
   - `nitpick`: harmless, but it should not be there.
-- Fix: one line.
+- Fix: one line, at the root cause. One call per row needs one batched call or a server query, not a cache.
 - One problem per finding, with no leftovers or misc bucket. The same problem in many places is one finding with a count.
 - A lead you did not open is dropped, not reported.
 - Anything that blocks a surface, like a failing sign-up or broken seed data, is a finding ranked by what it hides.
 - Within one severity, what hurts users most comes first, then the most visible surface.
-- Every check group ends as a finding, clean, or on one `Not run:` line above the list with its reason. No silent skips.
+- Every check group ends as a finding, clean, or on the `Not run:` line with its reason. So does any surface in scope
+  missing a theme or width. The report always opens with that line, or `Not run: nothing`. No silent skips.
 - Show the screenshots, do not describe them: attach or embed them where the session can, give the file paths where it cannot.
 - List what is good only if asked. No intro, no summary, no essay.
 

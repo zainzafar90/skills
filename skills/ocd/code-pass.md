@@ -71,7 +71,8 @@ Pick the best-kept feature as the yardstick and compare every other feature to i
 
 ### Speed and scale
 
-- **No query in a loop.** One screen or request does not run N+1 queries.
+- **No query or API call in a loop.** One screen or request does not run N+1 of either. Sorting, counting, or
+  exporting a list makes one call, not one per row.
 - **Every list has a limit.** No endpoint returns a whole table.
 - **Filters and sorts have an index** on any table that grows.
 - **Every outside call has a timeout**, and retries only failures that can pass on a retry.

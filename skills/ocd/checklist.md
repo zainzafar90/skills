@@ -94,7 +94,7 @@ With the app running, always measure. Use a production build where you can, and 
 
 - **Load times stay in the good range.** LCP 2.5s or less, CLS 0.1 or less, INP 200ms or less, TTFB 800ms or less. Use Lighthouse or the browser tool's trace. `audit: slowTtfb`
 - **Images are sized and modern.** AVIF or WebP, and lazy below the fold.
-- **No wasteful calls.** The network log shows no repeated request and no oversized response on one load.
+- **No wasteful calls.** The network log shows no repeated request, no call per row, and no oversized response on one load.
 
 ## Proof
 
