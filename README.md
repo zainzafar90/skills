@@ -17,14 +17,14 @@ npx skills add zainzafar90/skills --skill react-standards
 | Skill | What it does |
 |---|---|
 | **react-standards** | Enforces React naming, component and route structure, state ownership, readability, and test-first development. |
-| **ocd** | A last-mile perfection pass on a user interface that catches the small things that make a product feel unfinished before the user has to point them out. |
+| **ocd** | A last-mile perfection pass on screens and code: UI polish, folder structure, naming, API and web consistency, and leftovers. |
 | **lean** | Cuts the current change down to the least code that works, strips comments that narrate the code, and applies the fixes. |
 | **commit** | Makes one-line commits on a human-named branch with no Co-Authored-By or AI attribution, and strips attribution from commits not yet pushed. |
 | **ship** | Takes a finished branch through review, UI checks, cleanup, commits, and a PR description in one run. |
 | **pr-review** | Reviews a pull request read-only and reports at most five confirmed findings with ready-to-apply suggestion blocks. |
 | **pr-description** | Writes a short, scannable PR title and description from the current branch, with optional before and after screenshots and video. |
 
-`ship` runs `pr-review` → `browser-verify` + `ocd` (UI only) → `lean` → `commit` → `pr-description`.
+`ship` runs `pr-review` → `browser-verify` (UI only) → `ocd` → `lean` → `commit` → `pr-description`.
 `browser-verify` and the `*-standards` rule skills live in [zainzafar90/myelin](https://github.com/zainzafar90/myelin).
 
 ## Companion skills
