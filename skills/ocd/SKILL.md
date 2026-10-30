@@ -1,25 +1,36 @@
 ---
 name: ocd
 description: >-
-  A last-mile perfection pass on a user interface that catches the small things
-  that make a product feel unfinished before the user has to point them out.
-  Use when the user asks for an ocd, polish, or pixel-perfect pass, or asks
-  whether a finished UI feature is really done. Works in any project with a UI
-  that runs in a browser.
+  A last-mile perfection pass on a whole product, screens and code, that catches
+  the small things that make it feel unfinished before the user has to point
+  them out. Covers UI polish, folder structure, naming, spacing, API and web
+  consistency, security, speed and scale, share previews, and leftovers. Use
+  when the user asks for an ocd, polish, or pixel-perfect pass, a structure or
+  consistency check, or whether a finished feature is really done.
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # OCD pass
 
-Be the designer with an obsessive eye. Look at every screen, find what feels
-unfinished, prove it with a screenshot, rank it, and fix it only after the user
-approves the list.
+Be the person with an obsessive eye. Find what feels unfinished, on screen and
+in the code, prove it, rank it, and fix it only after the user approves the list.
 
 Two rules hold the whole pass together:
 
-- **No finding without a screenshot.** Reading code is how you find the cause, not the problem.
-- **No fix before the list is approved**, and no fix called done until you have looked at it in a real browser.
+- **No finding without proof.** A screenshot for the UI, `file:line` or command output for code.
+- **No fix before the list is approved**, and no fix called done until it is proven: seen in a real browser for
+  the UI, the repo's checks for code.
+
+## Pick the pass
+
+| Asked for | Run |
+|---|---|
+| ocd, or "is it really done" | Both: the code pass, then the UI pass if the project has a UI |
+| Screens, polish, pixels, design | UI pass: steps 1 to 8 below |
+| Code, structure, naming, API, web consistency, security, scale | Code pass: follow [code-pass.md](code-pass.md), then steps 5 to 8 below |
+
+Both passes give one ranked list, not two.
 
 ## 1. Scope
 
@@ -73,12 +84,17 @@ or flows. Those need step 4.
 `audit-fixture.html` is its self-test: open it in a browser, it prints PASS or
 FAIL. Run it after editing `audit.js`.
 
+For public pages, also run `bash <this skill folder>/audit-page.sh <url>...`. It
+fetches each page logged out and reports `blocked`, `slowTtfb`, `noindex`,
+`missingTag`, and `ogImage`. Its output is a lead too. `audit-page.test.sh` is
+its self-test.
+
 ## 4. Look
 
 Open every screenshot and go through [checklist.md](checklist.md), group by
 group: alignment and rhythm; affordance honesty; density and wasted space; text
 fit; motion; colour, shadow and theme; consistency of controls; naming and
-icons; flows and states; brand presence.
+icons; flows and states; brand presence; copy; public pages; speed.
 
 Also use the app: do every toggle twice, run each flow to its end, trigger each
 destructive action, switch language if the app is translated.
@@ -98,7 +114,8 @@ One ranked list, worst first. Each finding is exactly this:
 - Severity: `blocks polish`, `noticeable` or `nitpick`.
 - Fix: one line.
 - The same problem in many places is one finding with a count.
-- Within one severity, the most visible surface comes first.
+- Within one severity, what hurts users most comes first, then the most visible surface.
+- Anything that could not run goes on one `Not run:` line above the list.
 - Show the screenshots, do not describe them: attach or embed them where the session can, give the file paths where it cannot.
 - List what is good only if asked. No intro, no summary, no essay.
 
@@ -113,7 +130,8 @@ unless they already said to fix as you go.
 - The smallest change that works. Reuse existing classes and tokens; put tunable values in CSS variables.
 - Follow the project's conventions and run its checks.
 - Fix the specific thing that was flagged. Do not revert or remove a whole feature over it, and do not strip anything nobody called wrong.
-- After each fix take the same screenshot again and compare. Send before and after for anything visual.
+- After each UI fix take the same screenshot again and compare. Send before and after for anything visual.
+- After each code fix run the repo's lint, typecheck, and tests.
 - Anything deferred goes into the project's debt list at that moment.
 
 ## 8. Re-run and stop
@@ -140,3 +158,6 @@ or lessons file. Then stop.
 | "The audit flagged it, so it's a finding" | Look at the screenshot first. |
 | "This was decided before but I'd do it differently" | Settled. Leave it out. |
 | "While I'm here I'll tidy this too" | One finding, one commit. New things go on the list. |
+| "The pixels are fine, so it's finished" | Do the code pass too. |
+| "It works, so the structure is fine" | Compare it to its sibling features. |
+| "It feels fast enough" | Measure it, or list it under "Not run". |

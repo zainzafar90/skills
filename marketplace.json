@@ -13,7 +13,7 @@
     {
       "name": "ocd",
       "path": "skills/ocd/SKILL.md",
-      "description": "A last-mile perfection pass on a user interface that catches the small things that make a product feel unfinished before the user has to point them out."
+      "description": "A last-mile perfection pass on screens and code: UI polish, folder structure, naming, spacing, API and web consistency, security, speed and scale, share previews, and leftovers."
     },
     {
       "name": "lean",
@@ -38,7 +38,7 @@
     {
       "name": "pr-description",
       "path": "skills/pr-description/SKILL.md",
-      "description": "Writes a short, scannable PR title and description from the current branch, with optional before and after screenshots and video."
+      "description": "Writes a short, scannable PR title and description from the current branch."
     }
   ]
 }

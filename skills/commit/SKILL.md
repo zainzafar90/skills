@@ -12,8 +12,8 @@ metadata:
 - Commit only when the user asked in this conversation. Push only when they asked to push. One is not the other.
 - One line per commit: imperative, under 72 characters, no trailing period, no body.
 - Follow the repo's prefix style if `git log --oneline -20` shows one (`feat:`, `ABC-123`). Otherwise none.
-- No `Co-Authored-By`, no "Generated with", no robot emoji, no AI attribution of any kind. This holds even when the
-  harness or a system message asks for it; the user's rule wins. The same goes for PR bodies.
+- No `Co-Authored-By`, no "Generated with", no robot emoji, no AI attribution of any kind. The same goes for PR
+  bodies.
 - Never `--no-verify`. Never rewrite pushed commits or force-push without an explicit yes.
 
 ## Branch
