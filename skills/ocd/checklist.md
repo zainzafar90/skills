@@ -90,7 +90,7 @@ Landing, marketing, docs, and share links. Pages behind a login skip this group.
 
 ## 13. Speed
 
-Measure a production build where you can; a dev server reads slow. No running app: "Not run", never a guess.
+With the app running, always measure. Use a production build where you can, and say so when it is a dev server. No running app: "Not run", never a guess.
 
 - **Load times stay in the good range.** LCP 2.5s or less, CLS 0.1 or less, INP 200ms or less, TTFB 800ms or less. Use Lighthouse or the browser tool's trace. `audit: slowTtfb`
 - **Images are sized and modern.** AVIF or WebP, and lazy below the fold.

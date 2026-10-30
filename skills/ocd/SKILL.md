@@ -16,11 +16,12 @@ metadata:
 Be the person with an obsessive eye. Find what feels unfinished, on screen and
 in the code, prove it, rank it, and fix it only after the user approves the list.
 
-Two rules hold the whole pass together:
+Three rules hold the whole pass together:
 
 - **No finding without proof.** A screenshot for the UI, `file:line` or command output for code.
 - **No fix before the list is approved**, and no fix called done until it is proven: seen in a real browser for
   the UI, the repo's checks for code.
+- **No installing tools or changing the user's setup without a yes.** Use what the repo and session already have.
 
 ## Pick the pass
 
@@ -122,11 +123,16 @@ One ranked list, worst first. Each finding is exactly this:
 ```
 
 - First line: what the user sees, in plain words. Cause comes second.
-- Severity: `blocks polish`, `noticeable` or `nitpick`.
+- Severity goes by the effect on the user, not by how rare it is:
+  - `blocks polish`: breaks for a user, loses what they typed or saved, opens a security hole, or hides a public page from search or sharing.
+  - `noticeable`: a user or teammate would trip on it.
+  - `nitpick`: harmless, but it should not be there.
 - Fix: one line.
-- The same problem in many places is one finding with a count.
+- One problem per finding, with no leftovers or misc bucket. The same problem in many places is one finding with a count.
+- A lead you did not open is dropped, not reported.
+- Anything that blocks a surface, like a failing sign-up or broken seed data, is a finding ranked by what it hides.
 - Within one severity, what hurts users most comes first, then the most visible surface.
-- Anything that could not run goes on one `Not run:` line above the list.
+- Every check group ends as a finding, clean, or on one `Not run:` line above the list with its reason. No silent skips.
 - Show the screenshots, do not describe them: attach or embed them where the session can, give the file paths where it cannot.
 - List what is good only if asked. No intro, no summary, no essay.
 
@@ -171,4 +177,5 @@ or lessons file. Then stop.
 | "While I'm here I'll tidy this too" | One finding, one commit. New things go on the list. |
 | "The pixels are fine, so it's finished" | Do the code pass too. |
 | "It works, so the structure is fine" | Compare it to its sibling features. |
-| "It feels fast enough" | Measure it, or list it under "Not run". |
+| "It feels fast enough" | Measure it, or list it under "Not run" with the reason. |
+| "It's rare, so it's a nitpick" | Rate the effect. Lost text is lost text. |
