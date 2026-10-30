@@ -55,6 +55,9 @@ app: pages, windows, dialogs, popovers, menus, toasts, empty states, error
 states, signed in and signed out, first run. Ask the user only if the project
 gives no way to find them or to run the app.
 
+Before any sign-in, check which API the app points at. Production: stop, point it at a local or test API, or put the
+signed-in surfaces on the `Not run:` line. Never send test requests to production.
+
 ## 2. Capture
 
 Use whatever browser automation the session has (Playwright, a browser pane,
@@ -64,11 +67,12 @@ Chrome DevTools). For every surface take:
 |---|---|
 | Theme | light and dark: the app's own theme switch if it has one, otherwise emulate the OS setting |
 | Width | desktop (1440x900) and phone (390x844) |
-| State | rest, hover and keyboard focus of each interactive thing, side panels open and closed |
+| State | rest, side panels open and closed |
 
 Save outside the repo (scratchpad or temp dir) as
 `<surface>--<theme>--<width>[--<state>].png` so a finding can point at its file.
-Crop hover and focus shots to the element and its surroundings. If an element
+After step 3, add hover and focus shots for audit leads and one of each control type. Skip the rest; a shot nobody
+looks at proves nothing. Crop them to the element and its surroundings. If an element
 cannot be hovered because something covers it, that is a finding: note it and
 move on instead of letting the capture hang.
 
@@ -113,7 +117,10 @@ destructive action, switch language if the app is translated.
 
 ## 5. Report
 
-One ranked list, worst first. Each finding is exactly this:
+Two sections, each ranked worst first: **Polish**, then **Bugs**. Polish is what looks, reads, or is built unfinished.
+Bugs are wrong behavior found while reading, like races and lost updates.
+
+Each section shows its top 15, then a count of the rest by severity, offered on request. Each finding is exactly this:
 
 ```
 3. [noticeable] "Sign out" sits left, "Cancel" is centred, in all 6 confirm dialogs.

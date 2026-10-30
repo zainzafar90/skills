@@ -82,7 +82,7 @@ check_page() {
   elif [ "$status" != "200" ]; then
     lead blocked "returned $status logged out"
   else
-    if printf '%s' "$final" | grep -qiE '/(login|signin|sign-in|auth)\b'; then
+    if [ "$final" != "$url" ] && printf '%s' "$final" | grep -qiE '/(login|signin|sign-in|auth)\b'; then
       lead blocked "redirected to $final"
     fi
 

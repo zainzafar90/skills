@@ -4,6 +4,9 @@ Read the repo like a new teammate with an obsessive eye. Find where it looks unf
 
 The rules live in the standards skills. This pass finds where the repo breaks them; it does not restate them.
 
+This pass hunts disagreement, not bugs. A logic bug you trip over gets one line in the Bugs section. Do not trace
+races, billing, or sync paths looking for more; that is `pr-review` and `security-audit`.
+
 ## 1. Scope
 
 Read the project's notes first: `AGENTS.md`, `CLAUDE.md`, ADRs, `.knowledge/state/`. A decision recorded there is
