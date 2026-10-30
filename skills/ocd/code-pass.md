@@ -9,8 +9,8 @@ The rules live in the standards skills. This pass finds where the repo breaks th
 Read the project's notes first: `AGENTS.md`, `CLAUDE.md`, ADRs, `.knowledge/state/`. A decision recorded there is
 settled. Never raise it as a finding.
 
-- On a branch: every feature the branch touches, whole folders, not just changed lines.
-- On the main branch, or when asked for everything: the whole repo.
+Scope comes from `SKILL.md`. With `diff`, read the changed files and what calls them, and keep only findings in the
+changed files. Audit leads outside them are dropped.
 
 Map it: apps and packages, web and API, the features on each side. Then load the skills that match the stack, by name:
 `coding-standards` always, plus `api-standards`, `frontend-standards`, `react-standards`, `typescript-standards`,
