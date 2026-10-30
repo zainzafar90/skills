@@ -11,7 +11,7 @@ Review a PR. Report only what matters, with ready-to-apply fixes. Nothing is pos
 
 ## Arguments
 
-`$ARGUMENTS` = `<pr number|url> [--visual]`. No number → the current branch's PR. `--visual` → also capture the UI change.
+`$ARGUMENTS` = `<pr number|url>`. No number → the current branch's PR.
 
 ## Rules
 
@@ -22,11 +22,10 @@ Review a PR. Report only what matters, with ready-to-apply fixes. Nothing is pos
 
 ## Steps
 
-1. `gh pr view <n> --json number,title,baseRefName,headRefName,headRefOid,isCrossRepository,files,additions,deletions`, `gh pr diff <n>` (own base, so stacked PRs stand alone), inline comments via `gh api repos/{owner}/{repo}/pulls/<n>/comments`, then `git fetch -q origin`.
+1. `gh pr view <n> --json number,title,baseRefName,headRefName,headRefOid,files,additions,deletions`, `gh pr diff <n>` (own base, so stacked PRs stand alone), inline comments via `gh api repos/{owner}/{repo}/pulls/<n>/comments`, then `git fetch -q origin`.
 2. Look for what would hurt in production: bugs, security/authz, silent failures, broken contracts. Trace every API call and env var to its real source (backend DTO, generated types, deploy workflow, build env allowlist).
 3. Check earlier comments (Codex, bots, humans): addressed or still open. Don't repeat them.
 4. `git merge-tree --write-tree origin/<base> origin/<head>` for conflicts.
-5. `--visual` and the diff touches UI: running a PR runs its code, so when `isCrossRepository` is true, ask first and skip the capture without a yes. Then delegate to a subagent to run the head in a scratch worktree (own port, never the user's servers or checkout), take screenshots of each changed screen (dark, plus 375px if layout changed), and record a ≤30s video of any changed interaction. Base vs head side by side when the change is a restyle.
 
 ## Output
 
@@ -44,7 +43,7 @@ The fix is a GitHub `suggestion` block for the exact lines (postable as-is), or 
 
 Save to `ai-help/pr-review/pr-<n>.md`, containing the verdict line, findings, a one-line open-comments status, a one-line merge status, and "missing tests" only if a real path is untested.
 
-Then publish it as a private Artifact: verdict on top, findings as cards with the suggestion diff, screenshots and video inline when `--visual` ran.
+Then publish it as a private Artifact: verdict on top, findings as cards with the suggestion diff.
 
 Chat reply: the verdict (`no blockers` or `blocked by …`), the findings as one line each, and the artifact link. Nothing else.
 

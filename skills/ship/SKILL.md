@@ -17,7 +17,7 @@ Each step is its own skill. Load it with the Skill tool by name and follow it; d
 | 3. Polish | `ocd`, code pass always, UI pass when the UI changed | the user skips it |
 | 4. Clean up | `lean` | the user skips it |
 | 5. Commit | `commit` | nothing is uncommitted |
-| 6. Describe | `pr-description`, with `--visual` when the UI changed | the user skips it |
+| 6. Describe | `pr-description` | the user skips it |
 
 The user can skip any step by name ("ship, skip ocd"). A skill that is not installed: say so in one line and go on.
 

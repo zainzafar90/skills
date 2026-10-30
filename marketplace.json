@@ -38,7 +38,7 @@
     {
       "name": "pr-description",
       "path": "skills/pr-description/SKILL.md",
-      "description": "Writes a short, scannable PR title and description from the current branch, with optional before and after screenshots and video."
+      "description": "Writes a short, scannable PR title and description from the current branch."
     }
   ]
 }
