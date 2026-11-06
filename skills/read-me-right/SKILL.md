@@ -1,6 +1,12 @@
 ---
 name: read-me-right
-description: Writes or rewrites a repo's README so it looks crafted and reads fast: a centred logo, name and one-line pitch with a hero screenshot, a short path to first use, the main jobs step by step with the app's exact labels, and everything else folded into collapsible sections. Every claim is checked against the code. Use whenever someone asks to write, rewrite, polish, trim or "make beautiful" a README, wants it to look like a well-made open-source project, or says the README is outdated, ugly, too long, too technical, or written for agents. Not for API reference docs, CLAUDE.md, AGENTS.md, or changelogs.
+description: >-
+  Writes or rewrites a repo's README so it looks crafted and reads fast: a centred logo, name and one-line pitch
+  with a hero screenshot, a short path to first use, the main jobs step by step with the app's exact labels, and
+  everything else folded into collapsible sections. Every claim is checked against the code. Use whenever
+  someone asks to write, rewrite, polish, trim or "make beautiful" a README, wants it to look like a well-made
+  open-source project, or says the README is outdated, ugly, too long, too technical, or written for agents. Not
+  for API reference docs, CLAUDE.md, AGENTS.md, or changelogs.
 metadata:
   version: "2.0.0"
 ---
