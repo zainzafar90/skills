@@ -23,9 +23,14 @@ npx skills add zainzafar90/skills --skill react-standards
 | **ship** | Takes a finished branch through review, UI checks, cleanup, commits, and a PR description in one run. |
 | **pr-review** | Reviews a pull request read-only and reports at most five confirmed findings with ready-to-apply suggestion blocks. |
 | **pr-description** | Writes a short, scannable PR title and description from the current branch. |
+| **browser-verify** | The definition of done for browser-facing changes. It drives the change in a real browser and tries to break it. |
+| **coding-standards** | Shared rules for readable, safe code in any language. The base the other standards skills build on. |
+| **api-standards** | Server-side standards for handlers, authorization, persistence, integrations, webhooks and workers. |
+| **frontend-standards** | Frontend standards for UI features, navigation, client state, forms, data fetching and accessibility. |
+| **typescript-standards** | A grep-checkable TypeScript review list for file size, `any`, exports, comments, config and lockfiles. |
+| **code-spacing** | Adds and enforces blank lines between declarations and logical blocks, so every file reads in vertical steps. |
 
 `ship` runs `pr-review` → `browser-verify` (UI only) → `ocd` → `lean` → `commit` → `pr-description`.
-`browser-verify` and the `*-standards` rule skills live in [zainzafar90/myelin](https://github.com/zainzafar90/myelin).
 
 ## Companion skills
 

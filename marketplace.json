@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "skills",
-    "description": "Personal agent skills: React standards, UI polish, and the review-to-PR shipping flow.",
+    "description": "Personal agent skills: coding standards, UI polish, browser checks and the review-to-PR shipping flow.",
     "author": "zainzafar90"
   },
   "skills": [
@@ -39,6 +39,36 @@
       "name": "pr-description",
       "path": "skills/pr-description/SKILL.md",
       "description": "Writes a short, scannable PR title and description from the current branch."
+    },
+    {
+      "name": "browser-verify",
+      "path": "skills/browser-verify/SKILL.md",
+      "description": "The definition of done for browser-facing changes. It drives the change in a real browser and tries to break it."
+    },
+    {
+      "name": "coding-standards",
+      "path": "skills/coding-standards/SKILL.md",
+      "description": "Shared rules for readable, safe code in any language. The base the other standards skills build on."
+    },
+    {
+      "name": "api-standards",
+      "path": "skills/api-standards/SKILL.md",
+      "description": "Server-side standards for handlers, authorization, persistence, integrations, webhooks and workers."
+    },
+    {
+      "name": "frontend-standards",
+      "path": "skills/frontend-standards/SKILL.md",
+      "description": "Frontend standards for UI features, navigation, client state, forms, data fetching and accessibility."
+    },
+    {
+      "name": "typescript-standards",
+      "path": "skills/typescript-standards/SKILL.md",
+      "description": "A grep-checkable TypeScript review list for file size, `any`, exports, comments, config and lockfiles."
+    },
+    {
+      "name": "code-spacing",
+      "path": "skills/code-spacing/SKILL.md",
+      "description": "Adds and enforces blank lines between declarations and logical blocks, so every file reads in vertical steps."
     }
   ]
 }
