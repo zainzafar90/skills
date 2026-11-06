@@ -69,6 +69,11 @@
       "name": "code-spacing",
       "path": "skills/code-spacing/SKILL.md",
       "description": "Adds and enforces blank lines between declarations and logical blocks, so every file reads in vertical steps."
+    },
+    {
+      "name": "read-me-right",
+      "path": "skills/read-me-right/SKILL.md",
+      "description": "Writes a crafted, short README: centred logo, one-line pitch, hero screenshot, the main jobs step by step, and everything else folded into collapsible sections, all checked against the code."
     }
   ]
 }

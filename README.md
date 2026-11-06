@@ -29,6 +29,7 @@ npx skills add zainzafar90/skills --skill react-standards
 | **frontend-standards** | Frontend standards for UI features, navigation, client state, forms, data fetching and accessibility. |
 | **typescript-standards** | A grep-checkable TypeScript review list for file size, `any`, exports, comments, config and lockfiles. |
 | **code-spacing** | Adds and enforces blank lines between declarations and logical blocks, so every file reads in vertical steps. |
+| **read-me-right** | Writes a crafted, short README: centred logo, one-line pitch, hero screenshot, the main jobs step by step, and everything else folded into collapsible sections, all checked against the code. |
 
 `ship` runs `pr-review` → `browser-verify` (UI only) → `ocd` → `lean` → `commit` → `pr-description`.
 
